@@ -18,6 +18,58 @@ function fmt(n: number, currency: string) {
   }).format(n);
 }
 
+/**
+ * pdf-lib's StandardFonts only support WinAnsi (Latin-1). Replace common
+ * Unicode characters that show up in user-entered text and strip anything
+ * else outside the safe range so drawText never throws.
+ */
+function safeText(input: string | null | undefined): string {
+  if (!input) return "";
+  const replacements: Record<string, string> = {
+    "→": "->",
+    "←": "<-",
+    "↗": "^",
+    "↘": "v",
+    "↑": "^",
+    "↓": "v",
+    "↔": "<->",
+    "·": "-",
+    "•": "-",
+    "—": "-",
+    "–": "-",
+    "−": "-",
+    "“": '"',
+    "”": '"',
+    "‘": "'",
+    "’": "'",
+    "…": "...",
+    "▲": "^",
+    "▼": "v",
+    "₹": "Rs",
+    "€": "EUR",
+    "£": "GBP",
+    "¥": "JPY",
+    "Rp": "Rp",
+    " ": " ", // non-breaking space
+  };
+  let out = input;
+  for (const [k, v] of Object.entries(replacements)) {
+    out = out.split(k).join(v);
+  }
+  // Strip anything still outside printable WinAnsi range
+  // (keep ASCII + Latin-1 Supplement printable: 0x20-0x7E and 0xA0-0xFF)
+  return out
+    .split("")
+    .map((c) => {
+      const code = c.charCodeAt(0);
+      if (code === 0x0a || code === 0x0d) return c; // newline / CR
+      if (code >= 0x20 && code <= 0x7e) return c;
+      if (code >= 0xa0 && code <= 0xff) return c;
+      return "?";
+    })
+    .join("");
+}
+
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const slug = url.searchParams.get("slug");
@@ -72,7 +124,9 @@ export async function GET(req: NextRequest) {
 
   y -= 18;
   page.drawText(
-    `${workspace.name}  ·  ${from} → ${to}  ·  Base ${workspace.baseCurrency}`,
+    safeText(
+      `${workspace.name}  -  ${from} -> ${to}  -  Base ${workspace.baseCurrency}`,
+    ),
     { x: margin, y, size: 10, font: helv, color: DARK_GRAY },
   );
 
@@ -95,8 +149,8 @@ export async function GET(req: NextRequest) {
   y -= 16;
 
   function row(label: string, value: number, font = helv) {
-    page.drawText(label, { x: margin, y, size: 11, font, color: BLACK });
-    const text = fmt(value, workspace.baseCurrency);
+    page.drawText(safeText(label), { x: margin, y, size: 11, font, color: BLACK });
+    const text = safeText(fmt(value, workspace.baseCurrency));
     const w = courier.widthOfTextAtSize(text, 11);
     page.drawText(text, {
       x: width - margin - w,
@@ -152,7 +206,7 @@ export async function GET(req: NextRequest) {
     font: helvBold,
     color: BLACK,
   });
-  const net = fmt(report.netIncome, workspace.baseCurrency);
+  const net = safeText(fmt(report.netIncome, workspace.baseCurrency));
   const netW = courier.widthOfTextAtSize(net, 14);
   page.drawText(net, {
     x: width - margin - netW,
@@ -164,7 +218,9 @@ export async function GET(req: NextRequest) {
 
   // Footer
   page.drawText(
-    `Generated ${new Date().toISOString().slice(0, 10)} · metricbase.org`,
+    safeText(
+      `Generated ${new Date().toISOString().slice(0, 10)} - metricbase.org`,
+    ),
     {
       x: margin,
       y: 40,
