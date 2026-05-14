@@ -66,8 +66,8 @@ export default async function BalanceSheetPage({
         </p>
       </div>
 
-      <div className="mb-card">
-        <div className="grid grid-cols-[1fr_120px_160px_160px_180px] px-4 py-3 border-b border-line">
+      <div className="mb-card overflow-x-auto">
+        <div className="grid grid-cols-[1fr_120px_160px_160px_180px] px-4 py-3 border-b border-line min-w-[780px]">
           {[
             "Account",
             "Currency",
@@ -91,7 +91,7 @@ export default async function BalanceSheetPage({
           report.accounts.map((a) => (
             <div
               key={a.id}
-              className="grid grid-cols-[1fr_120px_160px_160px_180px] px-4 py-3 border-b border-line last:border-b-0 items-center"
+              className="grid grid-cols-[1fr_120px_160px_160px_180px] px-4 py-3 border-b border-line last:border-b-0 items-center min-w-[780px]"
             >
               <span className="font-sans text-white text-sm">{a.name}</span>
               <span className="font-mono text-xs text-gold">{a.currency}</span>

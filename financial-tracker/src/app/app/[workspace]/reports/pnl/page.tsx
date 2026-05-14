@@ -157,7 +157,7 @@ function PnlTable({
           rows.map((r) => (
             <div
               key={r.name}
-              className="grid grid-cols-[1fr_200px] px-4 py-3 border-b border-line last:border-b-0"
+              className="grid grid-cols-[1fr_140px] sm:grid-cols-[1fr_200px] px-4 py-3 border-b border-line last:border-b-0"
             >
               <span className="font-sans text-white text-sm">{r.name}</span>
               <span className={`mono text-sm text-right ${toneClass}`}>
@@ -166,7 +166,7 @@ function PnlTable({
             </div>
           ))
         )}
-        <div className="grid grid-cols-[1fr_200px] px-4 py-3 border-t border-line-strong">
+        <div className="grid grid-cols-[1fr_140px] sm:grid-cols-[1fr_200px] px-4 py-3 border-t border-line-strong">
           <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-gold">
             Total
           </span>

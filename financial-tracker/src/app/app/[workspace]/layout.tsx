@@ -32,9 +32,11 @@ export default async function WorkspaceLayout({
         workspaces={workspaces}
         userEmail={user.email}
       />
-      <div className="flex flex-1">
+      <div className="flex flex-1 min-w-0">
         <Sidebar workspaceSlug={workspace.slug} />
-        <div className="flex-1 px-6 md:px-8 py-8">{children}</div>
+        <div className="flex-1 min-w-0 px-4 sm:px-6 md:px-8 py-6 md:py-8">
+          {children}
+        </div>
       </div>
     </div>
   );

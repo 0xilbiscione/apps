@@ -46,7 +46,7 @@ export function TransactionFilters({
           </button>
         )}
       </div>
-      <div className={`grid md:grid-cols-6 gap-2 ${pending ? "opacity-60" : ""}`}>
+      <div className={`grid grid-cols-2 md:grid-cols-6 gap-2 ${pending ? "opacity-60" : ""}`}>
         <input
           type="date"
           value={sp.get("from") ?? ""}

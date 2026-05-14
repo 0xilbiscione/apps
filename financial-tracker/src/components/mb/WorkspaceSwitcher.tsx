@@ -34,18 +34,18 @@ export function WorkspaceSwitcher({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-3 px-3 py-2 hover:bg-[rgba(201,168,76,0.06)] transition-colors border border-line"
+        className="flex items-center gap-3 px-3 py-2 hover:bg-[rgba(201,168,76,0.06)] transition-colors border border-line min-w-0 max-w-[200px] sm:max-w-none"
       >
         <NavDiamond size={20} />
-        <div className="flex flex-col items-start leading-none">
-          <span className="font-sans text-sm font-bold text-white">
+        <div className="flex flex-col items-start leading-none min-w-0">
+          <span className="font-sans text-sm font-bold text-white truncate max-w-[120px] sm:max-w-none">
             {current.name}
           </span>
-          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gray-3 mt-1">
+          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gray-3 mt-1 truncate max-w-[120px] sm:max-w-none">
             {current.type} · {current.baseCurrency}
           </span>
         </div>
-        <span className="font-mono text-xs text-gray-3 ml-2">▾</span>
+        <span className="font-mono text-xs text-gray-3 ml-1 shrink-0">▾</span>
       </button>
 
       {open && (

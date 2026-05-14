@@ -1,0 +1,143 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Eyebrow } from "./Eyebrow";
+import { signOutAction } from "@/server/actions/auth";
+
+type Item = { href: string; label: string };
+
+export function MobileNav({ workspaceSlug }: { workspaceSlug: string }) {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Close on route change
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll while open
+  useEffect(() => {
+    if (open) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [open]);
+
+  const sections: { title: string; items: Item[] }[] = [
+    {
+      title: "Books",
+      items: [
+        { href: `/app/${workspaceSlug}/dashboard`, label: "Dashboard" },
+        { href: `/app/${workspaceSlug}/transactions`, label: "Transactions" },
+        { href: `/app/${workspaceSlug}/accounts`, label: "Accounts" },
+        { href: `/app/${workspaceSlug}/budgets`, label: "Budgets" },
+      ],
+    },
+    {
+      title: "Analysis",
+      items: [
+        { href: `/app/${workspaceSlug}/reports/pnl`, label: "P&L" },
+        {
+          href: `/app/${workspaceSlug}/reports/balance-sheet`,
+          label: "Balance Sheet",
+        },
+      ],
+    },
+    {
+      title: "Settings",
+      items: [
+        { href: `/app/${workspaceSlug}/settings/workspace`, label: "Workspace" },
+        {
+          href: `/app/${workspaceSlug}/settings/categories`,
+          label: "Categories",
+        },
+        { href: `/app/${workspaceSlug}/settings/fx`, label: "FX Rates" },
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <button
+        type="button"
+        aria-label="Menu"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        className="md:hidden flex flex-col items-center justify-center w-10 h-10 border border-line hover:border-gold transition-colors gap-1.5"
+      >
+        <span
+          className={`block w-4 h-px bg-gold transition-transform ${
+            open ? "translate-y-[3px] rotate-45" : ""
+          }`}
+        />
+        <span
+          className={`block w-4 h-px bg-gold transition-transform ${
+            open ? "-translate-y-[3px] -rotate-45" : ""
+          }`}
+        />
+      </button>
+
+      {open && (
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+        >
+          <nav
+            onClick={(e) => e.stopPropagation()}
+            className="absolute right-0 top-0 bottom-0 w-[280px] bg-[var(--color-bg-elev)] border-l border-line flex flex-col overflow-y-auto"
+          >
+            <div className="flex justify-between items-center h-16 px-5 border-b border-line shrink-0">
+              <Eyebrow>Menu</Eyebrow>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close menu"
+                className="font-mono text-sm text-gray-2 hover:text-gold w-8 h-8 flex items-center justify-center border border-line hover:border-gold transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="flex flex-col gap-8 px-2 py-6 flex-1">
+              {sections.map((s) => (
+                <div key={s.title} className="flex flex-col gap-2">
+                  <Eyebrow className="px-3">{s.title}</Eyebrow>
+                  <div className="flex flex-col gap-px">
+                    {s.items.map((i) => {
+                      const active = pathname === i.href;
+                      return (
+                        <Link
+                          key={i.href}
+                          href={i.href}
+                          className={`font-mono text-[12px] uppercase tracking-[0.18em] px-3 py-3 transition-colors ${
+                            active
+                              ? "text-gold bg-[rgba(201,168,76,0.08)]"
+                              : "text-gray-1 hover:text-gold hover:bg-[rgba(201,168,76,0.06)]"
+                          }`}
+                        >
+                          {i.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <form action={signOutAction} className="border-t border-line p-4 shrink-0">
+              <button
+                type="submit"
+                className="w-full font-mono text-[12px] uppercase tracking-[0.18em] text-gray-2 hover:text-gold border border-line hover:border-gold py-3 transition-colors"
+              >
+                Sign out
+              </button>
+            </form>
+          </nav>
+        </div>
+      )}
+    </>
+  );
+}

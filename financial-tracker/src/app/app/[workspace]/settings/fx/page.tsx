@@ -31,8 +31,8 @@ export default async function FxSettingsPage({
 
       <FxOverrideForm slug={slug} />
 
-      <div className="mb-card">
-        <div className="grid grid-cols-[110px_100px_100px_1fr_120px_100px] px-4 py-3 border-b border-line">
+      <div className="mb-card overflow-x-auto">
+        <div className="grid grid-cols-[110px_100px_100px_1fr_120px_100px] px-4 py-3 border-b border-line min-w-[620px]">
           {["Date", "Base", "Quote", "Rate", "Source", ""].map((h) => (
             <span
               key={h}
@@ -51,7 +51,7 @@ export default async function FxSettingsPage({
           rates.map((r) => (
             <div
               key={r.id}
-              className="grid grid-cols-[110px_100px_100px_1fr_120px_100px] px-4 py-3 border-b border-line last:border-b-0 items-center"
+              className="grid grid-cols-[110px_100px_100px_1fr_120px_100px] px-4 py-3 border-b border-line last:border-b-0 items-center min-w-[620px]"
             >
               <span className="font-mono text-xs text-gray-2">
                 {r.date.toISOString().slice(0, 10)}

@@ -20,10 +20,10 @@ export default async function BudgetsPage({
 
   return (
     <div className="flex flex-col gap-8 max-w-[1240px]">
-      <header className="flex justify-between items-end">
+      <header className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3">
         <div>
           <Eyebrow>Budgets</Eyebrow>
-          <h1 className="font-sans text-3xl font-extrabold text-white mt-2">
+          <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-white mt-2">
             Monthly Budgets
           </h1>
           <p className="text-gray-2 text-sm mt-2">
@@ -34,7 +34,7 @@ export default async function BudgetsPage({
         </div>
         <Link
           href={`/app/${slug}/settings/categories`}
-          className="font-mono text-[11px] uppercase tracking-[0.18em] text-gold hover:text-gold-bright"
+          className="font-mono text-[11px] uppercase tracking-[0.18em] text-gold hover:text-gold-bright self-start sm:self-auto"
         >
           Manage categories →
         </Link>
@@ -87,8 +87,8 @@ function BudgetSection({
   return (
     <div className="flex flex-col gap-3">
       <Eyebrow>{title}</Eyebrow>
-      <div className="mb-card">
-        <div className="grid grid-cols-[1fr_140px_140px_1.4fr_120px] px-4 py-3 border-b border-line">
+      <div className="mb-card overflow-x-auto">
+        <div className="grid grid-cols-[1fr_140px_140px_1.4fr_120px] px-4 py-3 border-b border-line min-w-[760px]">
           {["Category", "Actual MTD", "Budget", "Progress", ""].map((h) => (
             <span
               key={h}
@@ -112,7 +112,7 @@ function BudgetSection({
             return (
               <div
                 key={r.id}
-                className="grid grid-cols-[1fr_140px_140px_1.4fr_120px] px-4 py-3 border-b border-line last:border-b-0 items-center"
+                className="grid grid-cols-[1fr_140px_140px_1.4fr_120px] px-4 py-3 border-b border-line last:border-b-0 items-center min-w-[760px]"
               >
                 <span className="font-sans text-sm text-white">{r.name}</span>
                 <span className="mono text-sm text-white">

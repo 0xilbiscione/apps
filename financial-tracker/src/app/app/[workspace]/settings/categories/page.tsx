@@ -72,8 +72,8 @@ function CategoryTable({
   return (
     <div className="flex flex-col gap-3">
       <Eyebrow>{title}</Eyebrow>
-      <div className="mb-card">
-        <div className="grid grid-cols-[1fr_140px_80px] px-4 py-3 border-b border-line">
+      <div className="mb-card overflow-x-auto">
+        <div className="grid grid-cols-[1fr_140px_80px] px-4 py-3 border-b border-line min-w-[420px]">
           <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-gray-3">
             Name
           </span>
@@ -90,7 +90,7 @@ function CategoryTable({
           items.map((c) => (
             <div
               key={c.id}
-              className="grid grid-cols-[1fr_140px_80px] px-4 py-3 border-b border-line last:border-b-0 items-center hover:bg-[var(--color-bg-hover)] transition-colors"
+              className="grid grid-cols-[1fr_140px_80px] px-4 py-3 border-b border-line last:border-b-0 items-center hover:bg-[var(--color-bg-hover)] transition-colors min-w-[420px]"
             >
               <span className="font-sans text-white text-sm">{c.name}</span>
               <span className="mono text-xs text-gray-2">

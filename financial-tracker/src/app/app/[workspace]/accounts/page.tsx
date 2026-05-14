@@ -45,8 +45,8 @@ export default async function AccountsPage({
           description="Add your first account above. Bun will use it as the starting point for your books."
         />
       ) : (
-        <div className="mb-card">
-          <div className="grid grid-cols-[1fr_120px_120px_160px_120px] px-4 py-3 border-b border-line">
+        <div className="mb-card overflow-x-auto">
+          <div className="grid grid-cols-[1fr_120px_120px_160px_120px] px-4 py-3 border-b border-line min-w-[660px]">
             {["Name", "Type", "Currency", "Opening Balance", ""].map((h) => (
               <span
                 key={h}
@@ -59,7 +59,7 @@ export default async function AccountsPage({
           {active.map((a) => (
             <div
               key={a.id}
-              className="grid grid-cols-[1fr_120px_120px_160px_120px] px-4 py-3 border-b border-line last:border-b-0 items-center hover:bg-[var(--color-bg-hover)] transition-colors"
+              className="grid grid-cols-[1fr_120px_120px_160px_120px] px-4 py-3 border-b border-line last:border-b-0 items-center hover:bg-[var(--color-bg-hover)] transition-colors min-w-[660px]"
             >
               <span className="font-sans text-white">{a.name}</span>
               <span className="font-mono text-xs text-gray-2">{a.type}</span>
@@ -78,11 +78,11 @@ export default async function AccountsPage({
       {archived.length > 0 && (
         <div className="flex flex-col gap-3">
           <Eyebrow>Archived</Eyebrow>
-          <div className="mb-card opacity-60">
+          <div className="mb-card overflow-x-auto opacity-60">
             {archived.map((a) => (
               <div
                 key={a.id}
-                className="grid grid-cols-[1fr_120px_120px_160px_120px] px-4 py-3 border-b border-line last:border-b-0 items-center"
+                className="grid grid-cols-[1fr_120px_120px_160px_120px] px-4 py-3 border-b border-line last:border-b-0 items-center min-w-[660px]"
               >
                 <span className="font-sans text-gray-2">{a.name}</span>
                 <span className="font-mono text-xs text-gray-3">{a.type}</span>

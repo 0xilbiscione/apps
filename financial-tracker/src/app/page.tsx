@@ -14,7 +14,7 @@ export default function HomePage() {
         <section className="mx-auto max-w-[1240px] px-6 md:px-8 py-24 md:py-32 grid md:grid-cols-[1.3fr_1fr] gap-16 items-center">
           <div className="flex flex-col gap-8">
             <Eyebrow>Phase 0 · Open Beta</Eyebrow>
-            <h1 className="font-sans text-5xl md:text-6xl font-extrabold leading-[1.05] tracking-tight text-white">
+            <h1 className="font-sans text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.05] tracking-tight text-white">
               Read your own{" "}
               <span className="text-gold">books</span>.
             </h1>
@@ -36,11 +36,11 @@ export default function HomePage() {
                 <GoldButton variant="ghost">MetricBase.org →</GoldButton>
               </a>
             </div>
-            <div className="flex gap-8 pt-4 text-xs font-mono text-gray-3 uppercase tracking-[0.2em]">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 pt-4 text-[10px] sm:text-xs font-mono text-gray-3 uppercase tracking-[0.2em]">
               <span>IDR · USD</span>
-              <span>·</span>
+              <span className="hidden sm:inline">·</span>
               <span>Personal + Company</span>
-              <span>·</span>
+              <span className="hidden sm:inline">·</span>
               <span>CSV + PDF Export</span>
             </div>
           </div>

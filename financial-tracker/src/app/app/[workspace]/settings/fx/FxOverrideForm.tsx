@@ -22,7 +22,7 @@ export function FxOverrideForm({ slug }: { slug: string }) {
     <form ref={ref} action={formAction} className="mb-card p-6">
       <div className="flex flex-col gap-4">
         <Eyebrow>Manual override</Eyebrow>
-        <div className="grid md:grid-cols-[140px_100px_100px_1fr_160px] gap-3 items-end">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[140px_100px_100px_1fr_160px] gap-3 items-end">
           <label className="flex flex-col gap-1.5">
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-3">
               Date

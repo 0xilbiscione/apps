@@ -95,10 +95,10 @@ export default async function TransactionsPage({
 
   return (
     <div className="flex flex-col gap-8 max-w-[1240px]">
-      <header className="flex items-end justify-between">
+      <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
           <Eyebrow>Transactions</Eyebrow>
-          <h1 className="font-sans text-3xl font-extrabold text-white mt-2">
+          <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-white mt-2">
             Ledger
           </h1>
           <p className="text-gray-2 text-sm mt-2">
@@ -108,7 +108,7 @@ export default async function TransactionsPage({
         </div>
         <Link
           href={`/api/export/csv?slug=${slug}${sp.from ? `&from=${sp.from}` : ""}${sp.to ? `&to=${sp.to}` : ""}`}
-          className="font-mono text-[11px] uppercase tracking-[0.18em] text-gold border border-gold hover:bg-gold hover:text-black px-4 py-2.5 transition-colors"
+          className="self-start sm:self-auto font-mono text-[11px] uppercase tracking-[0.18em] text-gold border border-gold hover:bg-gold hover:text-black px-4 py-2.5 transition-colors"
         >
           Export CSV
         </Link>
@@ -140,8 +140,8 @@ export default async function TransactionsPage({
           description="Try widening your filters or recording a new entry above."
         />
       ) : (
-        <div className="mb-card overflow-hidden">
-          <div className="grid grid-cols-[100px_100px_1.6fr_1.2fr_140px_60px] px-4 py-3 border-b border-line">
+        <div className="mb-card overflow-x-auto">
+          <div className="grid grid-cols-[100px_100px_1.6fr_1.2fr_140px_60px] px-4 py-3 border-b border-line min-w-[760px]">
             {["Date", "Type", "Memo · Category", "Account", "Amount", ""].map(
               (h) => (
                 <span
@@ -164,7 +164,7 @@ export default async function TransactionsPage({
             return (
               <div
                 key={t.id}
-                className="grid grid-cols-[100px_100px_1.6fr_1.2fr_140px_60px] px-4 py-3 border-b border-line last:border-b-0 items-center hover:bg-[var(--color-bg-hover)] transition-colors"
+                className="grid grid-cols-[100px_100px_1.6fr_1.2fr_140px_60px] px-4 py-3 border-b border-line last:border-b-0 items-center hover:bg-[var(--color-bg-hover)] transition-colors min-w-[760px]"
               >
                 <span className="font-mono text-xs text-gray-2">
                   {t.date.toISOString().slice(0, 10)}
