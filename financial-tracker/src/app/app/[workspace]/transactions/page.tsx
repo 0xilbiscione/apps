@@ -45,7 +45,7 @@ export default async function TransactionsPage({
       <div className="flex flex-col gap-8 max-w-[1240px]">
         <header>
           <Eyebrow>Transactions</Eyebrow>
-          <h1 className="font-sans text-3xl font-extrabold text-white mt-2">
+          <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-white mt-2">
             Ledger
           </h1>
         </header>
@@ -140,8 +140,9 @@ export default async function TransactionsPage({
           description="Try widening your filters or recording a new entry above."
         />
       ) : (
-        <div className="mb-card overflow-x-auto">
-          <div className="grid grid-cols-[100px_100px_1.6fr_1.2fr_140px_60px] px-4 py-3 border-b border-line min-w-[760px]">
+        <div className="mb-card">
+          {/* Desktop header */}
+          <div className="hidden md:grid grid-cols-[100px_100px_1.6fr_1.2fr_140px_60px] px-4 py-3 border-b border-line">
             {["Date", "Type", "Memo · Category", "Account", "Amount", ""].map(
               (h) => (
                 <span
@@ -164,31 +165,59 @@ export default async function TransactionsPage({
             return (
               <div
                 key={t.id}
-                className="grid grid-cols-[100px_100px_1.6fr_1.2fr_140px_60px] px-4 py-3 border-b border-line last:border-b-0 items-center hover:bg-[var(--color-bg-hover)] transition-colors min-w-[760px]"
+                className="border-b border-line last:border-b-0 hover:bg-[var(--color-bg-hover)] transition-colors"
               >
-                <span className="font-mono text-xs text-gray-2">
-                  {t.date.toISOString().slice(0, 10)}
-                </span>
-                <span className={`font-mono text-xs ${tone}`}>{t.type}</span>
-                <div className="flex flex-col">
-                  <span className="font-sans text-sm text-white">
-                    {t.memo || (t.category?.name ?? "—")}
+                {/* Desktop row */}
+                <div className="hidden md:grid grid-cols-[100px_100px_1.6fr_1.2fr_140px_60px] px-4 py-3 items-center">
+                  <span className="font-mono text-xs text-gray-2">
+                    {t.date.toISOString().slice(0, 10)}
                   </span>
-                  {t.memo && t.category && (
-                    <span className="font-mono text-[10px] text-gray-3 uppercase tracking-[0.15em] mt-0.5">
-                      {t.category.name}
+                  <span className={`font-mono text-xs ${tone}`}>{t.type}</span>
+                  <div className="flex flex-col">
+                    <span className="font-sans text-sm text-white">
+                      {t.memo || (t.category?.name ?? "—")}
                     </span>
-                  )}
+                    {t.memo && t.category && (
+                      <span className="font-mono text-[10px] text-gray-3 uppercase tracking-[0.15em] mt-0.5">
+                        {t.category.name}
+                      </span>
+                    )}
+                  </div>
+                  <span className="font-mono text-xs text-gray-2">
+                    {t.finAccount.name}
+                    {t.counterAccount ? ` → ${t.counterAccount.name}` : ""}
+                  </span>
+                  <span className={`mono text-sm ${tone}`}>
+                    {sign}{" "}
+                    <Money value={t.amount.toString()} currency={t.currency} />
+                  </span>
+                  <TransactionRowActions slug={slug} id={t.id} />
                 </div>
-                <span className="font-mono text-xs text-gray-2">
-                  {t.finAccount.name}
-                  {t.counterAccount ? ` → ${t.counterAccount.name}` : ""}
-                </span>
-                <span className={`mono text-sm ${tone}`}>
-                  {sign}{" "}
-                  <Money value={t.amount.toString()} currency={t.currency} />
-                </span>
-                <TransactionRowActions slug={slug} id={t.id} />
+                {/* Mobile card */}
+                <div className="md:hidden px-4 py-4 flex flex-col gap-2">
+                  <div className="flex justify-between items-start gap-3">
+                    <div className="flex flex-col min-w-0 flex-1">
+                      <span className="font-sans text-sm text-white truncate">
+                        {t.memo || t.category?.name || "—"}
+                      </span>
+                      <span className="font-mono text-[10px] text-gray-3 uppercase tracking-[0.18em] mt-1">
+                        {t.date.toISOString().slice(0, 10)} · {t.type}
+                        {t.category && t.memo ? ` · ${t.category.name}` : ""}
+                      </span>
+                    </div>
+                    <span className={`mono text-base font-bold shrink-0 ${tone}`}>
+                      {sign}{" "}
+                      <Money value={t.amount.toString()} currency={t.currency} />
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center gap-3 pt-1">
+                    <span className="font-mono text-[10px] text-gray-3 truncate">
+                      {t.finAccount.name}
+                      {t.counterAccount ? ` → ${t.counterAccount.name}` : ""}
+                    </span>
+                    <TransactionRowActions slug={slug} id={t.id} />
+                  </div>
+                </div>
               </div>
             );
           })}

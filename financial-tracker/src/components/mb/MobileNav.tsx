@@ -68,18 +68,16 @@ export function MobileNav({ workspaceSlug }: { workspaceSlug: string }) {
         aria-label="Menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="md:hidden flex flex-col items-center justify-center w-10 h-10 border border-line hover:border-gold transition-colors gap-1.5"
+        className="md:hidden inline-flex items-center gap-2 px-3 h-10 border border-gold bg-[rgba(201,168,76,0.08)] hover:bg-gold hover:text-black transition-colors text-gold"
       >
-        <span
-          className={`block w-4 h-px bg-gold transition-transform ${
-            open ? "translate-y-[3px] rotate-45" : ""
-          }`}
-        />
-        <span
-          className={`block w-4 h-px bg-gold transition-transform ${
-            open ? "-translate-y-[3px] -rotate-45" : ""
-          }`}
-        />
+        <span className="flex flex-col gap-1">
+          <span className="block w-4 h-[2px] bg-current" />
+          <span className="block w-4 h-[2px] bg-current" />
+          <span className="block w-4 h-[2px] bg-current" />
+        </span>
+        <span className="font-mono text-[11px] uppercase tracking-[0.18em] font-bold">
+          Menu
+        </span>
       </button>
 
       {open && (

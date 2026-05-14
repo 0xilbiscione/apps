@@ -32,7 +32,7 @@ export default async function PnlPage({
     <div className="flex flex-col gap-8 max-w-[1240px]">
       <header className="flex flex-col gap-2">
         <Eyebrow>Reports · P&amp;L</Eyebrow>
-        <h1 className="font-sans text-3xl font-extrabold text-white">
+        <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-white">
           Income statement
         </h1>
         <p className="text-gray-2 text-sm">
@@ -85,7 +85,7 @@ export default async function PnlPage({
         </Link>
       </form>
 
-      <div className="grid md:grid-cols-3 gap-px bg-[var(--color-line)]">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[var(--color-line)]">
         <div className="mb-card p-6">
           <Eyebrow>Total income</Eyebrow>
           <div className="mt-3 mono text-3xl font-extrabold text-[var(--color-up)]">

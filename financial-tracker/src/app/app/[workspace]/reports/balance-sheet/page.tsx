@@ -24,7 +24,7 @@ export default async function BalanceSheetPage({
     <div className="flex flex-col gap-8 max-w-[1240px]">
       <header className="flex flex-col gap-2">
         <Eyebrow>Reports · Balance sheet</Eyebrow>
-        <h1 className="font-sans text-3xl font-extrabold text-white">
+        <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-white">
           Balance sheet
         </h1>
         <p className="text-gray-2 text-sm">
@@ -66,8 +66,8 @@ export default async function BalanceSheetPage({
         </p>
       </div>
 
-      <div className="mb-card overflow-x-auto">
-        <div className="grid grid-cols-[1fr_120px_160px_160px_180px] px-4 py-3 border-b border-line min-w-[780px]">
+      <div className="mb-card">
+        <div className="hidden md:grid grid-cols-[1fr_120px_160px_160px_180px] px-4 py-3 border-b border-line">
           {[
             "Account",
             "Currency",
@@ -91,25 +91,66 @@ export default async function BalanceSheetPage({
           report.accounts.map((a) => (
             <div
               key={a.id}
-              className="grid grid-cols-[1fr_120px_160px_160px_180px] px-4 py-3 border-b border-line last:border-b-0 items-center min-w-[780px]"
+              className="border-b border-line last:border-b-0"
             >
-              <span className="font-sans text-white text-sm">{a.name}</span>
-              <span className="font-mono text-xs text-gold">{a.currency}</span>
-              <span className="mono text-sm text-gray-2">
-                <Money value={a.openingBalance} currency={a.currency} />
-              </span>
-              <span
-                className={`mono text-sm ${
-                  a.movements >= 0
-                    ? "text-[var(--color-up)]"
-                    : "text-[var(--color-down)]"
-                }`}
-              >
-                <Money value={a.movements} currency={workspace.baseCurrency} />
-              </span>
-              <span className="mono text-sm text-white text-right">
-                <Money value={a.balanceBase} currency={workspace.baseCurrency} />
-              </span>
+              <div className="hidden md:grid grid-cols-[1fr_120px_160px_160px_180px] px-4 py-3 items-center">
+                <span className="font-sans text-white text-sm">{a.name}</span>
+                <span className="font-mono text-xs text-gold">{a.currency}</span>
+                <span className="mono text-sm text-gray-2">
+                  <Money value={a.openingBalance} currency={a.currency} />
+                </span>
+                <span
+                  className={`mono text-sm ${
+                    a.movements >= 0
+                      ? "text-[var(--color-up)]"
+                      : "text-[var(--color-down)]"
+                  }`}
+                >
+                  <Money value={a.movements} currency={workspace.baseCurrency} />
+                </span>
+                <span className="mono text-sm text-white text-right">
+                  <Money value={a.balanceBase} currency={workspace.baseCurrency} />
+                </span>
+              </div>
+              <div className="md:hidden px-4 py-4 flex flex-col gap-2">
+                <div className="flex justify-between items-start gap-3">
+                  <div className="flex flex-col min-w-0">
+                    <span className="font-sans text-white font-semibold truncate">
+                      {a.name}
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-gold mt-1">
+                      {a.currency}
+                    </span>
+                  </div>
+                  <span className="mono text-base font-bold text-white shrink-0">
+                    <Money value={a.balanceBase} currency={workspace.baseCurrency} />
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex flex-col">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-gray-3">
+                      Opening
+                    </span>
+                    <span className="mono text-gray-2 mt-0.5">
+                      <Money value={a.openingBalance} currency={a.currency} />
+                    </span>
+                  </div>
+                  <div className="flex flex-col text-right">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-gray-3">
+                      Movements
+                    </span>
+                    <span
+                      className={`mono mt-0.5 ${
+                        a.movements >= 0
+                          ? "text-[var(--color-up)]"
+                          : "text-[var(--color-down)]"
+                      }`}
+                    >
+                      <Money value={a.movements} currency={workspace.baseCurrency} />
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           ))
         )}

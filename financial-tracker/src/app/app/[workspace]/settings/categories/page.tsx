@@ -25,7 +25,7 @@ export default async function CategoriesPage({
     <div className="flex flex-col gap-8 max-w-[1240px]">
       <header>
         <Eyebrow>Settings</Eyebrow>
-        <h1 className="font-sans text-3xl font-extrabold text-white mt-2">
+        <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-white mt-2">
           Categories
         </h1>
         <p className="text-gray-2 text-sm mt-2">
@@ -72,8 +72,8 @@ function CategoryTable({
   return (
     <div className="flex flex-col gap-3">
       <Eyebrow>{title}</Eyebrow>
-      <div className="mb-card overflow-x-auto">
-        <div className="grid grid-cols-[1fr_140px_80px] px-4 py-3 border-b border-line min-w-[420px]">
+      <div className="mb-card">
+        <div className="hidden sm:grid grid-cols-[1fr_140px_80px] px-4 py-3 border-b border-line">
           <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-gray-3">
             Name
           </span>
@@ -90,10 +90,12 @@ function CategoryTable({
           items.map((c) => (
             <div
               key={c.id}
-              className="grid grid-cols-[1fr_140px_80px] px-4 py-3 border-b border-line last:border-b-0 items-center hover:bg-[var(--color-bg-hover)] transition-colors min-w-[420px]"
+              className="grid grid-cols-[1fr_80px_60px] sm:grid-cols-[1fr_140px_80px] gap-2 px-4 py-3 border-b border-line last:border-b-0 items-center hover:bg-[var(--color-bg-hover)] transition-colors"
             >
-              <span className="font-sans text-white text-sm">{c.name}</span>
-              <span className="mono text-xs text-gray-2">
+              <span className="font-sans text-white text-sm truncate">
+                {c.name}
+              </span>
+              <span className="mono text-xs text-gray-2 text-right sm:text-left">
                 {c.monthlyBudget ? (
                   <Money value={c.monthlyBudget.toString()} currency={base} />
                 ) : (

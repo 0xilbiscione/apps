@@ -33,7 +33,7 @@ export default async function DashboardPage({
     <div className="flex flex-col gap-8 max-w-[1240px]">
       <header className="flex flex-col gap-2">
         <Eyebrow>Dashboard · {workspace.type}</Eyebrow>
-        <h1 className="font-sans text-3xl font-extrabold text-white">
+        <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-white break-words">
           {workspace.name}
         </h1>
         <p className="font-mono text-xs text-gray-3 uppercase tracking-[0.2em]">
@@ -41,7 +41,7 @@ export default async function DashboardPage({
         </p>
       </header>
 
-      <div className="grid md:grid-cols-3 gap-px bg-[var(--color-line)]">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[var(--color-line)]">
         <KpiCard
           label="Cashflow · MTD"
           value={<Money value={data.cashflowMtd} currency={workspace.baseCurrency} />}

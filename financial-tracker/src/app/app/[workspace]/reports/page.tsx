@@ -13,7 +13,7 @@ export default async function ReportsIndex({
     <div className="flex flex-col gap-8 max-w-[1240px]">
       <header>
         <Eyebrow>Reports</Eyebrow>
-        <h1 className="font-sans text-3xl font-extrabold text-white mt-2">
+        <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-white mt-2">
           Reports
         </h1>
       </header>

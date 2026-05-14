@@ -87,8 +87,8 @@ function BudgetSection({
   return (
     <div className="flex flex-col gap-3">
       <Eyebrow>{title}</Eyebrow>
-      <div className="mb-card overflow-x-auto">
-        <div className="grid grid-cols-[1fr_140px_140px_1.4fr_120px] px-4 py-3 border-b border-line min-w-[760px]">
+      <div className="mb-card">
+        <div className="hidden md:grid grid-cols-[1fr_140px_140px_1.4fr_120px] px-4 py-3 border-b border-line">
           {["Category", "Actual MTD", "Budget", "Progress", ""].map((h) => (
             <span
               key={h}
@@ -112,45 +112,86 @@ function BudgetSection({
             return (
               <div
                 key={r.id}
-                className="grid grid-cols-[1fr_140px_140px_1.4fr_120px] px-4 py-3 border-b border-line last:border-b-0 items-center min-w-[760px]"
+                className="border-b border-line last:border-b-0"
               >
-                <span className="font-sans text-sm text-white">{r.name}</span>
-                <span className="mono text-sm text-white">
-                  <Money value={r.actual} currency={base} />
-                </span>
-                <span className="mono text-sm text-gray-2">
-                  {r.budget !== null ? (
-                    <Money value={r.budget} currency={base} />
-                  ) : (
-                    <span className="text-gray-3">—</span>
-                  )}
-                </span>
-                {r.budget !== null && r.budget > 0 ? (
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-[var(--color-gray-4)]">
-                      <div
-                        className={over ? "bg-[var(--color-down)]" : "bg-gold"}
-                        style={{ width: `${pct}%`, height: "100%" }}
-                      />
-                    </div>
-                    <span
-                      className={`font-mono text-[10px] tabular-nums ${
-                        over ? "text-[var(--color-down)]" : "text-gray-2"
-                      }`}
-                    >
-                      {pct}%
-                    </span>
-                  </div>
-                ) : (
-                  <span className="font-mono text-[10px] text-gray-3">
-                    No budget set
+                <div className="hidden md:grid grid-cols-[1fr_140px_140px_1.4fr_120px] px-4 py-3 items-center">
+                  <span className="font-sans text-sm text-white">{r.name}</span>
+                  <span className="mono text-sm text-white">
+                    <Money value={r.actual} currency={base} />
                   </span>
-                )}
-                <BudgetEditRow
-                  slug={slug}
-                  id={r.id}
-                  currentBudget={r.budget}
-                />
+                  <span className="mono text-sm text-gray-2">
+                    {r.budget !== null ? (
+                      <Money value={r.budget} currency={base} />
+                    ) : (
+                      <span className="text-gray-3">—</span>
+                    )}
+                  </span>
+                  {r.budget !== null && r.budget > 0 ? (
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-1.5 bg-[var(--color-gray-4)]">
+                        <div
+                          className={over ? "bg-[var(--color-down)]" : "bg-gold"}
+                          style={{ width: `${pct}%`, height: "100%" }}
+                        />
+                      </div>
+                      <span
+                        className={`font-mono text-[10px] tabular-nums ${
+                          over ? "text-[var(--color-down)]" : "text-gray-2"
+                        }`}
+                      >
+                        {pct}%
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="font-mono text-[10px] text-gray-3">
+                      No budget set
+                    </span>
+                  )}
+                  <BudgetEditRow slug={slug} id={r.id} currentBudget={r.budget} />
+                </div>
+                <div className="md:hidden px-4 py-4 flex flex-col gap-3">
+                  <div className="flex justify-between items-start gap-3">
+                    <div className="flex flex-col min-w-0">
+                      <span className="font-sans text-white font-semibold truncate">
+                        {r.name}
+                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-gray-3 mt-1">
+                        Actual ·{" "}
+                        <span className="text-white">
+                          <Money value={r.actual} currency={base} />
+                        </span>
+                        {r.budget !== null ? (
+                          <>
+                            {" / "}
+                            <Money value={r.budget} currency={base} />
+                          </>
+                        ) : null}
+                      </span>
+                    </div>
+                    <BudgetEditRow slug={slug} id={r.id} currentBudget={r.budget} />
+                  </div>
+                  {r.budget !== null && r.budget > 0 ? (
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-1.5 bg-[var(--color-gray-4)]">
+                        <div
+                          className={over ? "bg-[var(--color-down)]" : "bg-gold"}
+                          style={{ width: `${pct}%`, height: "100%" }}
+                        />
+                      </div>
+                      <span
+                        className={`font-mono text-[10px] tabular-nums shrink-0 ${
+                          over ? "text-[var(--color-down)]" : "text-gray-2"
+                        }`}
+                      >
+                        {pct}%
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="font-mono text-[10px] text-gray-3">
+                      No budget set
+                    </span>
+                  )}
+                </div>
               </div>
             );
           })
