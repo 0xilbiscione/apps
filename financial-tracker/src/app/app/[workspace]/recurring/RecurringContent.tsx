@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Eyebrow } from '@/components/mb/Eyebrow';
 import { GoldButton } from '@/components/mb/GoldButton';
