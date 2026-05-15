@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { Eyebrow } from '@/components/mb/Eyebrow';
 import { GoldButton } from '@/components/mb/GoldButton';
-import { postDueRules, deleteRecurringRule } from '@/server/actions/recurring';
+import { postDueRules, deleteRecurringRule, type RecurringState } from '@/server/actions/recurring';
 import Link from 'next/link';
 import { RecurringRuleForm } from './RecurringRuleForm';
 
@@ -50,6 +50,10 @@ export function RecurringContent({
   categories,
 }: Props) {
   const [editingRuleId, setEditingRuleId] = useState<string | null>(null);
+  const [postState, postFormAction, postPending] = useActionState<RecurringState, FormData>(
+    postDueRules.bind(null, slug),
+    {},
+  );
 
   return (
     <main className="flex-1 px-4 sm:px-6 py-8 max-w-4xl mx-auto w-full">
@@ -70,7 +74,7 @@ export function RecurringContent({
 
         {dueRulesCount > 0 && (
           <form
-            action={postDueRules.bind(null, slug)}
+            action={postFormAction}
             className="mb-card p-6 flex gap-4 items-center"
           >
             <div className="flex-1">
@@ -81,8 +85,8 @@ export function RecurringContent({
                 Post materialized transactions for rules past their next run date
               </p>
             </div>
-            <GoldButton type="submit" variant="primary">
-              Post due
+            <GoldButton type="submit" variant="primary" disabled={postPending}>
+              {postPending ? "Posting…" : "Post due"}
             </GoldButton>
           </form>
         )}
