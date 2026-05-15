@@ -1,71 +1,106 @@
-import { RecurringContent } from "./RecurringContent";
+import { requireMembership } from "@/server/workspace";
+import { db } from "@/server/db";
+import { Eyebrow } from "@/components/mb/Eyebrow";
+import { Money } from "@/components/mb/Money";
+import { postDueRules } from "@/server/actions/recurring";
 
 export default async function RecurringPage({
   params,
 }: {
   params: Promise<{ workspace: string }>;
 }) {
-  const { requireMembership } = await import("@/server/workspace");
-  const { db } = await import("@/server/db");
+  const { workspace: slug } = await params;
+  const { workspace } = await requireMembership(slug);
 
-  const { workspace: workspaceSlug } = await params;
-  const { workspace } = await requireMembership(workspaceSlug, "MEMBER");
+  const rules = await db.recurringRule.findMany({
+    where: { workspaceId: workspace.id },
+    include: {
+      finAccount: true,
+      category: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
-  const [rules, accounts, categories] = await Promise.all([
-    db.recurringRule.findMany({
-      where: { workspaceId: workspace.id },
-      include: {
-        finAccount: true,
-        counterAccount: true,
-        category: true,
-      },
-      orderBy: { nextRunDate: "asc" },
-    }),
-    db.finAccount.findMany({
-      where: { workspaceId: workspace.id },
-      orderBy: { createdAt: "asc" },
-    }),
-    db.category.findMany({
-      where: { workspaceId: workspace.id },
-      orderBy: { name: "asc" },
-    }),
-  ]);
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const dueRulesCount = rules.filter((r) => {
-    const isDue = r.nextRunDate <= today;
-    const notEnded = !r.endDate || r.endDate >= today;
-    return isDue && notEnded;
-  }).length;
-
-  const serializedRules = rules.map((r) => {
-    const { amount, finAccount, ...rest } = r;
-    return {
-      ...rest,
-      amount: amount.toString(),
-      finAccount: finAccount
-        ? {
-            ...finAccount,
-            openingBalance: finAccount.openingBalance.toString(),
-          }
-        : null,
-    };
-  }) as any;
-
-  const serializedAccounts = accounts.map((a) => ({
-    ...a,
-    openingBalance: a.openingBalance.toString(),
-  }));
+  const dueCount = await db.recurringRule.count({
+    where: {
+      workspaceId: workspace.id,
+      nextRunDate: { lte: new Date() },
+      OR: [{ endDate: null }, { endDate: { gte: new Date() } }],
+    },
+  });
 
   return (
-    <RecurringContent
-      rules={serializedRules}
-      dueRulesCount={dueRulesCount}
-      slug={workspaceSlug}
-      accounts={serializedAccounts}
-      categories={categories}
-    />
+    <div className="flex flex-col gap-8 max-w-[1240px]">
+      <header>
+        <Eyebrow>Transactions</Eyebrow>
+        <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-white mt-2">
+          Recurring Rules
+        </h1>
+      </header>
+
+      {dueCount > 0 && (
+        <form action={postDueRules.bind(null, slug)} className="flex gap-2">
+          <button
+            type="submit"
+            className="font-mono text-[11px] uppercase tracking-[0.2em] text-gold hover:text-gold-bright px-3 py-2 border border-gold/30 hover:border-gold/50 transition-colors"
+          >
+            Post due ({dueCount})
+          </button>
+        </form>
+      )}
+
+      {rules.length === 0 ? (
+        <p className="text-gray-2">No recurring rules yet.</p>
+      ) : (
+        <div className="overflow-x-auto border border-line rounded-none">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-line">
+                <th className="text-left px-4 py-3 text-gray-2 font-mono text-[11px] uppercase tracking-[0.18em]">
+                  Account
+                </th>
+                <th className="text-left px-4 py-3 text-gray-2 font-mono text-[11px] uppercase tracking-[0.18em]">
+                  Type
+                </th>
+                <th className="text-right px-4 py-3 text-gray-2 font-mono text-[11px] uppercase tracking-[0.18em]">
+                  Amount
+                </th>
+                <th className="text-left px-4 py-3 text-gray-2 font-mono text-[11px] uppercase tracking-[0.18em]">
+                  Frequency
+                </th>
+                <th className="text-left px-4 py-3 text-gray-2 font-mono text-[11px] uppercase tracking-[0.18em]">
+                  Next Run
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {rules.map((rule) => (
+                <tr
+                  key={rule.id}
+                  className="border-b border-line/50 hover:bg-mid/50 transition-colors"
+                >
+                  <td className="px-4 py-3 text-white">{rule.finAccount.name}</td>
+                  <td className="px-4 py-3 text-white text-xs">
+                    <span className="font-mono px-2 py-1 bg-mid rounded-none">
+                      {rule.type}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-right text-white">
+                    <Money amount={rule.amount} currency={rule.currency} />
+                  </td>
+                  <td className="px-4 py-3 text-white text-xs">
+                    Every {rule.interval} {rule.freq.toLowerCase()}
+                    {rule.interval > 1 ? "s" : ""}
+                  </td>
+                  <td className="px-4 py-3 text-white text-xs">
+                    {rule.nextRunDate.toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }
