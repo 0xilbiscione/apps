@@ -30,11 +30,10 @@ export const {
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
       allowDangerousEmailAccountLinking: true,
     }),
-    // TODO: Enable once AUTH_RESEND_KEY is configured with a valid key
-    // Resend({
-    //   apiKey: process.env.AUTH_RESEND_KEY,
-    //   from: process.env.AUTH_EMAIL_FROM ?? "onboarding@resend.dev",
-    // }),
+    Resend({
+      apiKey: process.env.AUTH_RESEND_KEY,
+      from: process.env.AUTH_EMAIL_FROM ?? "onboarding@resend.dev",
+    }),
   ],
   callbacks: {
     session({ session, user }) {
