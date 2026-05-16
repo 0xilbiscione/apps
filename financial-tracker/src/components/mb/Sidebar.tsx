@@ -38,6 +38,7 @@ export function Sidebar({ workspaceSlug }: { workspaceSlug: string }) {
         { href: METRICBASE_LINKS.energy, label: "Energy", external: true },
         { href: METRICBASE_LINKS.chain, label: "Crypto", external: true },
         { href: METRICBASE_LINKS.saham, label: "Saham", external: true },
+        { href: METRICBASE_LINKS.journal, label: "Journal", external: true },
         { href: METRICBASE_LINKS.contact, label: "Contact us", external: true },
       ],
     },
