@@ -34,7 +34,7 @@ export function AccountRow({ account, slug }: { account: Account; slug: string }
     const fd = new FormData(e.currentTarget);
     fd.set("id", account.id);
     startTransition(async () => {
-      await updateAccount(slug, fd);
+      await updateAccount(slug, undefined, fd);
       setEditing(false);
     });
   }
