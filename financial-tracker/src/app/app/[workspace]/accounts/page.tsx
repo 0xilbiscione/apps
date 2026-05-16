@@ -56,7 +56,7 @@ export default async function AccountsPage({
             ))}
           </div>
           {active.map((a) => (
-            <AccountRow key={a.id} account={a} slug={slug} />
+            <AccountRow key={a.id} account={{ ...a, openingBalance: a.openingBalance.toString() }} slug={slug} />
           ))}
         </div>
       )}
@@ -66,7 +66,7 @@ export default async function AccountsPage({
           <Eyebrow>Archived</Eyebrow>
           <div className="mb-card opacity-60">
             {archived.map((a) => (
-              <AccountRow key={a.id} account={a} slug={slug} />
+              <AccountRow key={a.id} account={{ ...a, openingBalance: a.openingBalance.toString() }} slug={slug} />
             ))}
           </div>
         </div>
