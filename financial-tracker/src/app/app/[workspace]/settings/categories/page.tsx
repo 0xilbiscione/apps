@@ -87,7 +87,12 @@ function CategoryTable({
           </div>
         ) : (
           items.map((c) => (
-            <CategoryRow key={c.id} category={c} slug={slug} base={base} />
+            <CategoryRow
+              key={c.id}
+              category={{ ...c, monthlyBudget: c.monthlyBudget?.toString() ?? null }}
+              slug={slug}
+              base={base}
+            />
           ))
         )}
       </div>
